@@ -5,29 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Prezentace</title>
     <script type="module">
-        import { getDocument } from './pdfjs-4.10.38-dist/build/pdf.mjs';
-        
+        import * as pdfjsLib from './pdfjs/build/pdf.mjs';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = './pdfjs/build/pdf.worker.mjs';
+
         const url = "Modely pro predikci nelineárních vztahů.pdf";
-        let pdfDoc = null,
-            pageNum = 1,
-            pageIsRendering = false,
-            pageNumPending = null;
-        
-        const scale = 1.5,
-              canvas = document.getElementById('pdf-render'),
-              ctx = canvas.getContext('2d');
-        
+        let pdfDoc = null, pageNum = 1, pageIsRendering = false, pageNumPending = null;
+        const scale = 1.5;
+        const canvas = document.getElementById('pdf-render');
+        const ctx = canvas.getContext('2d');
+
         function renderPage(num) {
             pageIsRendering = true;
             pdfDoc.getPage(num).then(page => {
                 const viewport = page.getViewport({ scale });
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
-
-                const renderCtx = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
+                
+                const renderCtx = { canvasContext: ctx, viewport: viewport };
                 page.render(renderCtx).promise.then(() => {
                     pageIsRendering = false;
                     if (pageNumPending !== null) {
@@ -35,11 +29,10 @@
                         pageNumPending = null;
                     }
                 });
-
                 document.getElementById('page-num').textContent = num;
             });
         }
-        
+
         function queueRenderPage(num) {
             if (pageIsRendering) {
                 pageNumPending = num;
@@ -47,19 +40,19 @@
                 renderPage(num);
             }
         }
-        
+
         function prevPage() {
             if (pageNum <= 1) return;
             pageNum--;
             queueRenderPage(pageNum);
         }
-        
+
         function nextPage() {
             if (pageNum >= pdfDoc.numPages) return;
             pageNum++;
             queueRenderPage(pageNum);
         }
-        
+
         function openFullscreen() {
             if (canvas.requestFullscreen) {
                 canvas.requestFullscreen();
@@ -72,7 +65,7 @@
             }
         }
 
-        getDocument(url).promise.then(pdfDoc_ => {
+        pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
             pdfDoc = pdfDoc_;
             document.getElementById('page-count').textContent = pdfDoc.numPages;
             renderPage(pageNum);
