@@ -3,45 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Viewer</title>
+    <title>PDF Prezentace</title>
+    <script src="pdfjs/pdf.js"></script> <!-- Uprav cestu podle svého repozitáře -->
     <style>
         body {
             text-align: center;
             font-family: Arial, sans-serif;
         }
-        iframe {
+        canvas {
             width: 90vw;
-            height: 80vh;
-            border: none;
+            max-height: 90vh;
+            border: 1px solid #ccc;
         }
         button {
-            margin-top: 10px;
-            padding: 10px 20px;
+            margin: 10px;
+            padding: 10px 15px;
             font-size: 16px;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <iframe id="pdf-frame" src="Modely pro predikci nelineárních vztahů.pdf"></iframe>
+    <h1>PDF Prezentace</h1>
+    <canvas id="pdf-render"></canvas>
     <br>
+    <button onclick="prevPage()">← Předchozí</button>
+    <button onclick="nextPage()">Další →</button>
     <button onclick="openFullscreen()">Celá obrazovka</button>
-    <p><a href="Modely pro predikci nelineárních vztahů.pdf" target="_blank">Stáhnout PDF</a></p>
+    <p>Strana: <span id="page-num"></span> / <span id="page-count"></span></p>
 
     <script>
-        function openFullscreen() {
-            let elem = document.getElementById("pdf-frame");
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.mozRequestFullScreen) { 
-                elem.mozRequestFullScreen();
-            } else if (elem.webkitRequestFullscreen) { 
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { 
-                elem.msRequestFullscreen();
+        const url = "Modely pro predikci nelineárních vztahů.pdf"; // Cesta k PDF
+
+        let pdfDoc = null,
+            pageNum = 1,
+            pageIsRendering = false,
+            pageNumPending = null;
+
+        const scale = 1.5,
+              canvas = document.getElementById('pdf-render'),
+              ctx = canvas.getContext('2d');
+
+        function renderPage(num) {
+            pageIsRendering = true;
+            pdfDoc.getPage(num).then(page => {
+                const viewport = page.getViewport({ scale });
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                const renderCtx = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                page.render(renderCtx).promise.then(() => {
+                    pageIsRendering = false;
+                    if (pageNumPending !== null) {
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+
+                document.getElementById('page-num').textContent = num;
+            });
+        }
+
+        function queueRenderPage(num) {
+            if (pageIsRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
             }
         }
+
+        function prevPage() {
+            if (pageNum <= 1) return;
+            pageNum--;
+            queueRenderPage(pageNum);
+        }
+
+        function nextPage() {
+            if (pageNum >= pdfDoc.numPages) return;
+            pageNum++;
+            queueRenderPage(pageNum);
+        }
+
+        function openFullscreen() {
+            if (canvas.requestFullscreen) {
+                canvas.requestFullscreen();
+            } else if (canvas.mozRequestFullScreen) { 
+                canvas.mozRequestFullScreen();
+            } else if (canvas.webkitRequestFullscreen) { 
+                canvas.webkitRequestFullscreen();
+            } else if (canvas.msRequestFullscreen) { 
+                canvas.msRequestFullscreen();
+            }
+        }
+
+        pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
+            pdfDoc = pdfDoc_;
+            document.getElementById('page-count').textContent = pdfDoc.numPages;
+            renderPage(pageNum);
+        });
     </script>
 </body>
 </html>
-
