@@ -4,45 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Prezentace</title>
-    <script src="pdfjs/build/pdf.mjs"></script> <!-- Uprav cestu podle svého repozitáře -->
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-        }
-        canvas {
-            width: 90vw;
-            max-height: 90vh;
-            border: 1px solid #ccc;
-        }
-        button {
-            margin: 10px;
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <h1>PDF Prezentace</h1>
-    <canvas id="pdf-render"></canvas>
-    <br>
-    <button onclick="prevPage()">← Předchozí</button>
-    <button onclick="nextPage()">Další →</button>
-    <button onclick="openFullscreen()">Celá obrazovka</button>
-    <p>Strana: <span id="page-num"></span> / <span id="page-count"></span></p>
+    <script type="module">
+        import * as pdfjsLib from './pdfjs-4.10.38-dist/build/pdf.mjs';
+        pdfjsLib.GlobalWorkerOptions.workerSrc = './pdfjs-4.10.38-dist/build/pdf.worker.mjs';
 
-    <script>
-        const url = "Modely pro predikci nelineárních vztahů.pdf"; // Cesta k PDF
-
-        let pdfDoc = null,
-            pageNum = 1,
-            pageIsRendering = false,
-            pageNumPending = null;
-
-        const scale = 1.5,
-              canvas = document.getElementById('pdf-render'),
-              ctx = canvas.getContext('2d');
+        const url = "Modely pro predikci nelineárních vztahů.pdf";
+        let pdfDoc = null, pageNum = 1, pageIsRendering = false, pageNumPending = null;
+        const scale = 1.5;
+        const canvas = document.getElementById('pdf-render');
+        const ctx = canvas.getContext('2d');
 
         function renderPage(num) {
             pageIsRendering = true;
@@ -50,11 +20,8 @@
                 const viewport = page.getViewport({ scale });
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
-
-                const renderCtx = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
+                
+                const renderCtx = { canvasContext: ctx, viewport: viewport };
                 page.render(renderCtx).promise.then(() => {
                     pageIsRendering = false;
                     if (pageNumPending !== null) {
@@ -62,7 +29,6 @@
                         pageNumPending = null;
                     }
                 });
-
                 document.getElementById('page-num').textContent = num;
             });
         }
@@ -105,5 +71,31 @@
             renderPage(pageNum);
         });
     </script>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            width: 90vw;
+            max-height: 90vh;
+            border: 1px solid #ccc;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>PDF Prezentace</h1>
+    <canvas id="pdf-render"></canvas>
+    <br>
+    <button onclick="prevPage()">← Předchozí</button>
+    <button onclick="nextPage()">Další →</button>
+    <button onclick="openFullscreen()">Celá obrazovka</button>
+    <p>Strana: <span id="page-num"></span> / <span id="page-count"></span></p>
 </body>
 </html>
