@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>PDF Prezentace</title>
     <script type="module">
         import { getDocument } from 'https://unpkg.com/pdfjs-dist@4.10.38/build/pdf.mjs';
@@ -79,31 +80,51 @@
             renderPage(pageNum);
         });
     </script>
+=======
+    <title>PDF Viewer</title>
+>>>>>>> parent of 36f5798 (Update index.html)
     <style>
         body {
             text-align: center;
             font-family: Arial, sans-serif;
         }
-        canvas {
+        iframe {
             width: 90vw;
-            max-height: 90vh;
-            border: 1px solid #ccc;
+            height: 80vh;
+            border: none;
         }
         button {
-            margin: 10px;
-            padding: 10px 15px;
+            margin-top: 10px;
+            padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <h1>PDF Prezentace</h1>
-    <canvas id="pdf-render"></canvas>
+    <iframe id="pdf-frame" src="Modely pro predikci nelineárních vztahů.pdf"></iframe>
     <br>
-    <button onclick="prevPage()">← Předchozí</button>
-    <button onclick="nextPage()">Další →</button>
     <button onclick="openFullscreen()">Celá obrazovka</button>
+<<<<<<< HEAD
     <p>Strana: <span id="page-num"></span> / <span id="page-count"></span></p>
+=======
+    <p><a href="Modely pro predikci nelineárních vztahů.pdf" target="_blank">Stáhnout PDF</a></p>
+
+    <script>
+        function openFullscreen() {
+            let elem = document.getElementById("pdf-frame");
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { 
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { 
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { 
+                elem.msRequestFullscreen();
+            }
+        }
+    </script>
+>>>>>>> parent of 36f5798 (Update index.html)
 </body>
 </html>
+
