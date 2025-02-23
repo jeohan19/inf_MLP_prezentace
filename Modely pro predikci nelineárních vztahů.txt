@@ -41,17 +41,6 @@ bežnými algoritmy je řešení extrémně náročné / nemožné
 odvození znaků z rukopisu → systém psaných číslic nevznikl na principech matematiky 
 zpracování přirozeného jazyka
 
-–|--0
-–|--1
-–|--2
-–|--3
-–|--4
-–|--5
-–|--6
-–|--7
-–|--8
-–|--9
-
 Architektura neuronové sítě
 původně založena na principech biologických neuronových sítí
 nyní se v některých případech původnímu konceptu vzdaluje → stále založena na neuronech, ale čím dál více je koncept modifikován pro nižší výpočetní náročnost a lepší uzpůsobení dané úloze
@@ -119,20 +108,7 @@ díky tomu je síť schopná “vidět / soustředit se na” důležité inform
 
 
 ReLU a Leaky ReLU
-                pokud je výstup neuronu < 0: ReLU(n) = 0 → problém mrtvých neuronů
-              / 
-ReLU <
-              \ 
-                pokud je výstup neuronu > 0: ReLU(n) = n
 
-
-                  pokud je výstup neuronu < 0: ReLU(n) = n * alfa (například 0.01)
-                / 
-LReLU <
-                \ 
-                  pokud je výstup neuronu > 0: ReLU(n) = n
-
-řeší problém mrtvých neuronů → sníží výstupní hodnotu ale neuron se nepřestane učit
 
 Váhy
 hodnota každého spojení mezi neurony
@@ -197,20 +173,6 @@ následující podrobnosti jsou uvedeny čistě pro úplnost
 
 V praxi
 pro ilustraci si vezměme tuto síť:
-w1
-w2
-w3
-w4
-x→
-y
-b2
-w1
-w3
-w4
-w2
-b1
-b3
-x →
 
 Derivace (velmi zjednodušeně)
 udává rychlost změny výsledku funkce vůči změně konkrétní proměnné
@@ -396,12 +358,6 @@ ostatní modely selhaly
 při menším počtu příkladů selhaly všechny modely         
 
 
-
-
-Heatmap (síla synapsí)
-
-Heatmap (síla synapsí)
-
 Heatmap (síla synapsí)
 
 Dodatky k modelu
@@ -459,55 +415,6 @@ po stažení a zprovoznění na školních počítačích * → generování jed
 Nyní si můžete vymyslet vztah mezi x, y a případně na něj zkusíme neuronovou síť natrénovat.
 
 Zdroje
-https://medium.com/@waadlingaadil/learn-to-build-a-neural-network-from-scratch-yes-really-cac4ca457efc
-https://www.desmos.com/calculator
-https://www.sololearn.com/en/learn/courses/le-machine-learning?location=2
-https://networkx.org/documentation/stable/reference/index.html
-https://numpy.org/doc/
-https://scikit-learn.org/stable/
-https://matplotlib.org/stable/index.html
-
-
-Zdroje
-https://en.wikipedia.org/wiki/Multilayer_perceptron
-https://cs.wikipedia.org/wiki/Goniometrick%C3%A1_funkce
-https://www.researchgate.net/publication/220541319_Fully_Complex_Multi-Layer_Perceptron_Network_for_Nonlinear_Signal_Processing
-https://ai.stackexchange.com/questions/24282/what-is-the-justification-for-kaiming-he-initialization
-https://copilot.microsoft.com/chats/ZDZBNPYWVSiy6F8q4t917
-https://chatgpt.com/
-https://stackoverflow.com/questions/13453501/my-neural-net-learns-sin-x-but-not-cos-x
-https://blog.dataiku.com/pre-trained-models-ais-object-oriented-programming
-
-
-Zdroje
-https://news.ycombinator.com/item?id=19402666
-https://en.wikipedia.org/wiki/GPT-3
-https://seaborn.pydata.org/
-https://medium.com/@shauryagoel/kaiming-he-initialization-a8d9ed0b5899
-https://medium.com/analytics-vidhya/backpropagation-for-dummies-e069410fa585
-
-
-
-
-
-
-
-
-
-
-Videa
-https://www.youtube.com/watch?v=Ilg3gGewQ5U
-https://www.youtube.com/watch?v=WUvTyaaNkzM
-https://www.youtube.com/watch?v=tIeHLnjs5U8
-ne všechny jsou o neuronových sítích
-
-Obrázky
-https://www.oreilly.com/library/view/deep-learning-essentials/9781785880360/12eaae27-3de8-4f9d-8bbf-0db18d6c3297.xhtml
-https://sspvc.lixis.cz/matematika_2/mocninne_funkce.html
-https://open-neuromorphic.org/neuromorphic-computing/hardware/loihi-intel/
-https://www.eetindia.co.in/neuromorphic-computing-system-reaches-100-million-neurons/
-https://aryanbajaj13.medium.com/gpt-4-is-coming-soon-heres-what-we-know-so-far-gpt-gpt2-gpt3-43c3b38eeeb8
-všechny ostatní obrázky byly generovány pomocí pythonu a příslušných knihoven během tréninku sítě nebo stránkou https://www.desmos.com/calculator
 
 
 Děkuji za pozornost
